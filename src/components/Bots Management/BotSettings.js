@@ -1,61 +1,61 @@
 import React, { useEffect, useState } from "react";
-// import TitleCard from "../Cards/TitleCard";
-import SelectBotSettingsType from "./SelectBotSettingsType";
-import GeneralSettings from "./GeneralSettings";
-// import BehaviorSettings from "./BehaviorSettings";
-// import IntegrationsSettings from "./IntegrationsSettings";
-// import "./BotSettings.css";
 import { API_URL } from "../../store";
+import ErrorText from "../Typography/ErrorText";
 
 export default function BotSettings({ currentBot, setShowBotSettings }) {
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("general");
+  const [errorMessage, setErrorMessage] = useState("");
   const [botId, setBotId] = useState("");
   const [botName, setBotName] = useState("");
   const [botDescription, setBotDescription] = useState("");
   const [attachedBusiness, setAttachedBusiness] = useState("");
-  // const [botType, setBotType] = useState("");
-  // const [botIsActive, setBotIsActive] = useState(false);
-  // const [botResponseTemplates, setBotResponseTemplates] = useState("");
-  // const [botThresholdResponseTime, setBotThresholdResponseTime] = useState(0);
-  // const [botThresholdConfidenceLevels, setBotThresholdConfidenceLevels] =
-  //   useState(0);
-  // const [botTimeOutConfiguration, setBotTimeOutConfiguration] = useState(0);
-  // const [apiKeys, setApiKeys] = useState("");
-  // const [platformIntegration, setPlatformIntegration] = useState("");
-  // const [
-  //   webhookConfigurationNotifications,
-  //   setWebhookConfigurationNotifications,
-  // ] = useState(false);
-  // const [webhookConfigurationEvents, setWebhookConfigurationEvents] =
-  //   useState(false);
-  // const [errorResponses, setErrorResponses] = useState("");
-  // const [isLoggingEnabled, setIsLoggingEnabled] = useState(false);
-  // const [logging, setLogging] = useState("");
-
-  // const botTypes = ["Customer Support", "Sales"];
-
-  // const platforms = ["Slack", "WhatApp"];
-
-  // const loggingOptions = [
-  //   "Logging option 1",
-  //   "Logging option 2",
-  //   "Logging option 3",
-  // ];
+  const [totalBusinesses, setTotalBusinesses] = useState([]);
 
   useEffect(() => {
     setBotId(currentBot._id);
     setBotName(currentBot.botName);
     setBotDescription(currentBot.botDescription);
     setAttachedBusiness(currentBot.attachedBusiness);
-    // setBotIsActive(currentBot.isActive);
   }, [currentBot]);
+
+  useEffect(() => {
+    let result = null;
+
+    const fetchBusinesses = async () => {
+      try {
+        const response = await fetch(API_URL + "data/all-data", {
+          method: "GET",
+        });
+        result = await response.json();
+        if (response.ok) {
+          if (result) {
+            console.log(result);
+            setTotalBusinesses(result.data);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchBusinesses();
+  }, []);
 
   const toggleModal = () => {
     setShowBotSettings(false);
   };
 
   const handleUpdateBot = async () => {
+    if (botName.trim() === "") {
+      return setErrorMessage("Bot Name is required!");
+    }
+    if (botDescription.trim() === "") {
+      return setErrorMessage("Bot Description is resuired!");
+    }
+    if (attachedBusiness.trim() === "") {
+      return setErrorMessage("Attach Business is resuired!");
+    }
+
     let result = null;
     setLoading(true);
 
@@ -74,7 +74,7 @@ export default function BotSettings({ currentBot, setShowBotSettings }) {
       result = await response.json();
       if (response.ok) {
         if (result) {
-          // console.log("Updated bot: ", result);
+          console.log("Updated bot: ", result);
           setLoading(false);
           setShowBotSettings(false);
         }
@@ -87,99 +87,108 @@ export default function BotSettings({ currentBot, setShowBotSettings }) {
 
   return (
     <>
-      <div className="botSettings fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
-        <div className="my-10 relative p-4 py-6 mx-2 w-full max-w-md h-[550px] bg-[#FFFFFF] dark:bg-[#1D232A] rounded-2xl">
-          <button
-            type="button"
-            className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-w-full flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            onClick={toggleModal}
-          >
-            <svg
-              className="w-3 h-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 14"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6"
+      <div className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-70 z-50">
+        <div className="w-full max-w-[890px] bg-white px-8 pb-5 pt-10 dark:bg-[#1D232A] rounded-md">
+          <div className="mb-4">
+            <div className="text-2xl font-bold border-b dark:border-none">
+              Update "{botName}" bot.
+            </div>
+            <span className="text-sm  text-gray-700 dark:text-gray-400">
+              Edit the bot credentials to update the existing bot settings. You
+              can modify bot credentials as needed.
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="">
+              <label
+                htmlFor="botName"
+                className="text-md font-medium text-gray-900 dark:text-gray-300 block"
+              >
+                Bot Name
+              </label>
+              <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                Add name of bot down here.
+              </span>
+              <input
+                type="text"
+                name="botName"
+                id="botName"
+                value={botName}
+                onChange={(e) => setBotName(e.target.value)}
+                className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                placeholder="Enter your bot name..."
+                required
               />
-            </svg>
-            <span className="sr-only">Close modal</span>
-          </button>
-          <h1 className="text-xl font-bold">"{botName}" Settings</h1>
-          <SelectBotSettingsType
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
-          <div className="max-h-[370px] overflow-y-auto">
-            {activeTab === "general" && (
-              <>
-                <GeneralSettings
-                  botName={botName}
-                  setBotName={setBotName}
-                  botDescription={botDescription}
-                  setBotDescription={setBotDescription}
-                  attachedBusiness={attachedBusiness}
-                  setAttachedBusiness={setAttachedBusiness}
-                  // botTypes={botTypes}
-                  // botType={botType}
-                  // setBotType={setBotType}
-                  // botIsActive={botIsActive}
-                  // setBotIsActive={setBotIsActive}
-                />
-              </>
-            )}
-            {/* {activeTab === "behavior" && (
-            <>
-              <BehaviorSettings
-                botResponseTemplates={botResponseTemplates}
-                setBotResponseTemplates={setBotResponseTemplates}
-                botThresholdResponseTime={botThresholdResponseTime}
-                setBotThresholdResponseTime={setBotThresholdResponseTime}
-                botThresholdConfidenceLevels={botThresholdConfidenceLevels}
-                setBotThresholdConfidenceLevels={
-                  setBotThresholdConfidenceLevels
-                }
-                botTimeOutConfiguration={botTimeOutConfiguration}
-                setBotTimeOutConfiguration={setBotTimeOutConfiguration}
+            </div>
+            <div className="col-span-2">
+              <label
+                htmlFor="botDescription"
+                className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+              >
+                Bot Description
+              </label>
+              <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                Add bot Description down here
+              </span>
+              <textarea
+                name="botDescription"
+                value={botDescription}
+                onChange={(e) => setBotDescription(e.target.value)}
+                className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                placeholder="Enter your bot description..."
+                required
               />
-            </>
-          )}
-          {activeTab === "integrations" && (
-            <>
-              <IntegrationsSettings
-                apiKeys={apiKeys}
-                setApiKeys={setApiKeys}
-                setPlatformIntegration={setPlatformIntegration}
-                platforms={platforms}
-                platformIntegration={platformIntegration}
-                webhookConfigurationNotifications={
-                  webhookConfigurationNotifications
-                }
-                setWebhookConfigurationNotifications={
-                  setWebhookConfigurationNotifications
-                }
-                webhookConfigurationEvents={webhookConfigurationEvents}
-                setWebhookConfigurationEvents={setWebhookConfigurationEvents}
-                errorResponses={errorResponses}
-                setErrorResponses={setErrorResponses}
-                isLoggingEnabled={isLoggingEnabled}
-                setIsLoggingEnabled={setIsLoggingEnabled}
-                setLogging={setLogging}
-                loggingOptions={loggingOptions}
-                logging={logging}
-              />
-            </>
-          )} */}
-            <div className="mt-4 flex justify-center">
+            </div>
+            <div className="">
+              <label
+                htmlFor="attachedBusiness"
+                className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+              >
+                Attached Business
+              </label>
+              <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                Attach business to your bot down here.
+              </span>
+              <select
+                className="cursor-pointer shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                onClick={(e) => setAttachedBusiness(e.target.value)}
+              >
+                <option value={""}>none</option>
+                {totalBusinesses.map((business, index) => {
+                  if (attachedBusiness === business.businessName) {
+                    return (
+                      <>
+                        <option
+                          key={index}
+                          value={business.businessName}
+                          selected
+                        >
+                          {business.businessName}
+                        </option>
+                      </>
+                    );
+                  }
+                  return (
+                    <>
+                      <option key={index} value={business.businessName}>
+                        {business.businessName}
+                      </option>
+                    </>
+                  );
+                })}
+              </select>
+            </div>
+          </div>
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="w-full flex gap-2 justify-end items-center col-span-2 text-right">
+              <ErrorText styleClass="mt-8">{errorMessage}</ErrorText>
+              <button type="button" className="btn" onClick={toggleModal}>
+                Close
+              </button>
               <button
                 onClick={handleUpdateBot}
-                className={`h-10 text-white bg-[#5D17EB] hover:bg-[#3F00E7] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center ${
+                disabled={loading}
+                className={`h-12 text-white bg-[#737FFF] hover:bg-[#646EE4] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center ${
                   loading ? "opacity-30" : ""
                 }`}
               >

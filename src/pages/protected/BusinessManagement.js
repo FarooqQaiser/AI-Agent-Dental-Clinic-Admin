@@ -5,7 +5,7 @@ import DeleteBusiness from "../../components/Business Management/DeleteBusiness"
 import EditBusiness from "../../components/Business Management/EditBusiness";
 import { API_URL } from "../../store";
 import ViewBusiness from "../../components/Business Management/ViewBusiness";
-import { IoIosAddCircleOutline } from "react-icons/io";
+// import { IoIosAddCircleOutline } from "react-icons/io";
 import Cog6ToothIcon from "@heroicons/react/24/outline/Cog6ToothIcon";
 import { GrView } from "react-icons/gr";
 import { IoTrashOutline } from "react-icons/io5";
@@ -44,6 +44,7 @@ export default function BusinessManagement() {
           result = await response.json();
           if (response.ok) {
             if (result) {
+              console.log(result);
               setTotalBusinesses(result.data);
               setLoading(false);
             } else {
@@ -91,7 +92,7 @@ export default function BusinessManagement() {
         <>
           <TitleCard title={"Total Businesses"}>
             <button
-              className="absolute top-5 right-2.5 text-white bg-[#5D17EB] hover:bg-[#3F00E7] focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg font-medium text-sm p-2 text-center flex justify-center items-center"
+              className="absolute top-5 right-2.5 btn px-6 btn-sm normal-case btn-primary"
               onClick={handleCreateBusiness}
             >
               Add New Business
@@ -212,25 +213,6 @@ export default function BusinessManagement() {
                 </tbody>
               </table>
             </div>
-            {/* <ul className="mt-4 space-y-4">
-              {totalBusinesses.map((business, index) => (
-                <>
-                  <li
-                    key={index}
-                    // className="bg-[#F2F2F2] dark:bg-[#191E24] flex flex-col gap-5 p-4 rounded-lg shadow-sm transition"
-                  >
-                    <Business
-                      iconClasses={iconClasses}
-                      business={business}
-                      setEditBusinessModal={setEditBusinessModal}
-                      setViewBusinessModal={setViewBusinessModal}
-                      setShowDeleteBusinessModal={setShowDeleteBusinessModal}
-                      setId={setId}
-                    />
-                  </li>
-                </>
-              ))}
-            </ul> */}
           </TitleCard>
           <div className="mt-10"></div>
         </>

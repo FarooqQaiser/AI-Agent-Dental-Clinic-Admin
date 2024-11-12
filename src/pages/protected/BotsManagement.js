@@ -8,7 +8,7 @@ import ViewBot from "../../components/Bots Management/ViewBot";
 import Cog6ToothIcon from "@heroicons/react/24/outline/Cog6ToothIcon";
 import { GrView } from "react-icons/gr";
 import { IoTrashOutline } from "react-icons/io5";
-import { IoIosAddCircleOutline } from "react-icons/io";
+// import { IoIosAddCircleOutline } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { setPageTitle } from "../../features/common/headerSlice";
 
@@ -16,7 +16,6 @@ const BotsManagement = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const iconClasses = `h-6 w-6`;
-  const [botName, setBotName] = useState("");
   const [bots, setBots] = useState([]);
   const [showCreateBot, setShowCreateBot] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -82,11 +81,11 @@ const BotsManagement = () => {
         <>
           <TitleCard title={"Bots Management"}>
             <button
-              className="absolute top-5 right-2.5 text-white bg-[#5D17EB] hover:bg-[#3F00E7] focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg font-medium text-sm p-2 text-center flex justify-center items-center"
+              className="absolute top-5 right-2.5 btn px-6 btn-sm normal-case btn-primary"
               onClick={() => setShowCreateBot(true)}
             >
-            Add New Bot    
-                </button>
+              Add New Bot
+            </button>
             {successMessage && (
               <div className="bg-green-100 text-green-800 p-2 rounded mb-4">
                 {successMessage}
@@ -209,11 +208,7 @@ const BotsManagement = () => {
           {showCreateBot && (
             <CreateBot
               setShowCreateBot={setShowCreateBot}
-              bots={bots}
-              setBots={setBots}
               setSuccessMessage={setSuccessMessage}
-              botName={botName}
-              setBotName={setBotName}
             />
           )}
           {showBotSettings && (

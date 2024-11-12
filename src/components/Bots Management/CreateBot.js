@@ -2,17 +2,11 @@ import React, { useEffect, useState } from "react";
 import { API_URL } from "../../store";
 import ErrorText from "../Typography/ErrorText";
 
-export default function CreateBot({
-  setShowCreateBot,
-  bots,
-  setBots,
-  setSuccessMessage,
-  botName,
-  setBotName,
-}) {
+export default function CreateBot({ setShowCreateBot, setSuccessMessage }) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [totalBusinesses, setTotalBusinesses] = useState("");
+  const [totalBusinesses, setTotalBusinesses] = useState([]);
+  const [botName, setBotName] = useState("");
   const [botDescription, setBotDescription] = useState("");
   const [attachedBusiness, setAttachedBusiness] = useState("");
 
@@ -29,15 +23,10 @@ export default function CreateBot({
           if (result) {
             console.log(result);
             setTotalBusinesses(result.data);
-            // setLoading(false);
           }
-          //   else {
-          //     setLoading(false);
-          //   }
         }
       } catch (err) {
         console.error(err);
-        // setLoading(false);
       }
     };
 
@@ -54,13 +43,6 @@ export default function CreateBot({
     if (attachedBusiness.trim() === "") {
       return setErrorMessage("Attach Business is resuired!");
     }
-    // if (botName) {
-    //   const newBot = { name: botName, isActive: false };
-    //   setBots([...bots, newBot]);
-    //   setBotName("");
-    //   setSuccessMessage("Bot added successfully!");
-    //   setTimeout(() => setSuccessMessage(""), 3000);
-    // }
     let result = null;
     setLoading(true);
 
@@ -96,103 +78,99 @@ export default function CreateBot({
 
   return (
     <>
-      <div className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50">
-        <div className="my-10 relative p-4 py-6 mx-2 w-full max-w-md bg-[#FFFFFF] dark:bg-[#1D232A] rounded-2xl overflow-y-auto">
-          {" "}
-          {/* h-[550px] */}
-          <button
-            type="button"
-            className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-w-full flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-            onClick={() => setShowCreateBot(false)}
-          >
-            <svg
-              className="w-3 h-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 14"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6"
-              />
-            </svg>
-            <span className="sr-only">Close modal</span>
-          </button>
-          <h1 className="text-2xl font-semibold">Create Bot</h1>
-          <div className="mt-10 flex flex-col gap-4 mb-6">
-            <div>
+      <div className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-70 z-50">
+        <div className="w-full max-w-[890px] bg-white px-8 pb-5 pt-10 dark:bg-[#1D232A] rounded-md">
+          <div className="mb-4">
+            <div className="text-2xl font-bold border-b dark:border-none">
+              Add New bot
+            </div>
+            <span className="text-sm  text-gray-700 dark:text-gray-400">
+              Enter the bot credentials to create a bot account. You can update
+              bot credentials later. Note that this email and password will be
+              used for login purpose.
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="">
               <label
                 htmlFor="botName"
-                className="dark:text-white text-black text-lg font-semibold"
+                className="text-md font-medium text-gray-900 dark:text-gray-300 block "
               >
                 Bot Name
               </label>
+              <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                Add name of bot down here.
+              </span>
               <input
-                name="botName"
                 type="text"
+                name="botName"
+                id="botName"
                 value={botName}
                 onChange={(e) => setBotName(e.target.value)}
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-black focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                placeholder="Enter Bot Name"
+                className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                placeholder="Enter your bot name..."
+                required
               />
             </div>
-            <div>
+            <div className="col-span-2  mb-5">
               <label
                 htmlFor="botDescription"
-                className="dark:text-white text-black text-lg font-semibold"
+                className="text-md font-medium text-gray-900 dark:text-gray-300 block "
               >
                 Bot Description
               </label>
-              <input
+              <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                Add bot Description down here
+              </span>
+              <textarea
                 name="botDescription"
-                type="text"
                 value={botDescription}
                 onChange={(e) => setBotDescription(e.target.value)}
-                className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-black focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                placeholder="Enter Bot Description"
+                className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                placeholder="Enter your bot description..."
+                required
               />
             </div>
-            <div className="flex flex-col gap-3">
-              <label className="dark:text-white text-black text-lg font-semibold">
-                Attach Business
-              </label>
-              <select
-                className="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-black focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                onChange={(e) => setAttachedBusiness(e.target.value)}
+            <div className="">
+              <label
+                htmlFor="attachedBusiness"
+                className="text-md font-medium text-gray-900 dark:text-gray-300 block "
               >
-                <option value={""} className="">
-                  none
-                </option>
-                {totalBusinesses.length > 0 && (
-                  <>
-                    {totalBusinesses.map((business, index) => {
-                      return (
-                        <>
-                          <option
-                            className=""
-                            value={business.businessName}
-                            key={index}
-                          >
-                            {business.businessName}
-                          </option>
-                        </>
-                      );
-                    })}
-                  </>
-                )}
+                Attached Business
+              </label>
+              <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                Attach business to your bot down here.
+              </span>
+              <select
+                className="cursor-pointer shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                onClick={(e) => setAttachedBusiness(e.target.value)}
+              >
+                <option value={""}>none</option>
+                {totalBusinesses.map((business, index) => {
+                  return (
+                    <>
+                      <option key={index} value={business.businessName}>
+                        {business.businessName}
+                      </option>
+                    </>
+                  );
+                })}
               </select>
             </div>
-            <ErrorText styleClass="mt-8">{errorMessage}</ErrorText>
-            <div className="flex justify-center">
+
+            <div className="w-full flex gap-2 justify-end items-center col-span-2 text-right">
+              <ErrorText styleClass="mt-8">{errorMessage}</ErrorText>
               <button
-                onClick={() => {
-                  handleAddBot();
-                }}
-                className={`h-10 text-white bg-[#5D17EB] hover:bg-[#3F00E7] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center ${
+                type="button"
+                className="btn"
+                onClick={() => setShowCreateBot(false)}
+              >
+                Close
+              </button>
+              <button
+                onClick={handleAddBot}
+                disabled={loading}
+                className={`h-12 text-white bg-[#737FFF] hover:bg-[#646EE4] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center ${
                   loading ? "opacity-30" : ""
                 }`}
               >

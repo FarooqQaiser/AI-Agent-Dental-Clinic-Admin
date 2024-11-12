@@ -1,22 +1,32 @@
 import React, { useState } from "react";
 import "./CreateBusiness.css";
 import { API_URL } from "../../store";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export default function CreateBusiness({ setOpenCreateBusinessForm }) {
   const [loading, setLoading] = useState(false);
   const [businessName, setBusinessName] = useState("");
-  const [businessDescription, setBusinessDescription] = useState("");
   const [businessEINNumber, setBusinessEINNumber] = useState("");
-  const [showError, setShowError] = useState(false);
+  const [businessEmail, setBusinessEmail] = useState("");
+  const [businessPassword, setBusinessPassword] = useState("");
+  const [businessDescription, setBusinessDescription] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const createBusiness = async () => {
-    if (businessName && businessDescription && businessDescription) {
-      setShowError(false);
+    if (
+      businessName &&
+      businessDescription &&
+      businessDescription &&
+      businessEmail &&
+      businessPassword
+    ) {
       setLoading(true);
       const business = JSON.stringify({
         businessName: businessName,
         businessDescription: businessDescription,
         businessEINNumber: businessEINNumber,
+        businessEmail: businessEmail,
+        businessPassword: businessPassword,
       });
       let result = null;
 
@@ -39,102 +49,163 @@ export default function CreateBusiness({ setOpenCreateBusinessForm }) {
         console.error(err);
         setLoading(false);
       }
-    } else {
-      setShowError(true);
     }
   };
 
   return (
-    <div className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full bg-black bg-opacity-50 overflow-y-auto overflow-x-hidden">
-      <div className="relative p-4 w-full max-w-md max-h-full bg-[#FFFFFF] dark:bg-[#1D232A] rounded-2xl">
-        <button
-          type="button"
-          className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-          onClick={() => setOpenCreateBusinessForm(false)}
-        >
-          <svg
-            className="w-3 h-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 14"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
-          <span className="sr-only">Close modal</span>
-        </button>
-        <div className="mt-5 p-5 flex flex-col gap-5">
-          <div className="flex flex-col gap-2">
+    <div className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-70 z-50">
+      <div className="w-full max-w-[890px] bg-white px-8 pb-5 pt-10 dark:bg-[#1D232A] rounded-md">
+        <div className="mb-4">
+          <div className="text-2xl font-bold border-b dark:border-none">
+            Add New Business
+          </div>
+          <span className="text-sm  text-gray-700 dark:text-gray-400">
+            Enter the business credentials to create a business account. You can
+            update business credentials later. Note that this email and password
+            will be used for login purpose.
+          </span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="">
             <label
               htmlFor="businessName"
-              className="text-black dark:text-white text-lg font-semibold"
+              className="text-md font-medium text-gray-900 dark:text-gray-300 block "
             >
               Business Name
             </label>
+            <span className="text-[12px] text-gray-700 dark:text-gray-400">
+              Add name of business down here
+            </span>
             <input
               type="text"
               name="businessName"
-              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-black focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-              required
-              placeholder="Enter your business name..."
+              id="businessName"
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="businessDescription"
-              className="text-black dark:text-white text-lg font-semibold"
-            >
-              Business Description
-            </label>
-            <textarea
-              name="businessDescription"
-              className="block w-full h-52 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-black focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+              placeholder="Enter your business name..."
               required
-              placeholder="Enter your business description..."
-              value={businessDescription}
-              onChange={(e) => setBusinessDescription(e.target.value)}
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="">
             <label
               htmlFor="businessEINNumber"
-              className="text-black dark:text-white text-lg font-semibold"
+              className="text-md font-medium text-gray-900 dark:text-gray-300 block "
             >
-              Business EIN Number
+              EIN Number
             </label>
+            <span className="text-[12px] text-gray-700 dark:text-gray-400">
+              Add EIN Number down here
+            </span>
             <input
               type="text"
               name="businessEINNumber"
-              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-black focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-              required
-              placeholder="Enter your business EIN number..."
+              id="businessEINNumber"
               value={businessEINNumber}
               onChange={(e) => setBusinessEINNumber(e.target.value)}
+              className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+              placeholder="Enter your business EIN number..."
+              required
             />
           </div>
-          {showError && (
-            <>
-              <p className="text-red-500 dark:text-red-700 text-center text-lg font-semibold">
-                Please fill all fields!
-              </p>
-            </>
-          )}
-          <button
-            className={`h-10 text-white bg-[#5D17EB] hover:bg-[#3F00E7] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center ${
-              loading ? "opacity-30" : ""
-            }`}
-            onClick={createBusiness}
-          >
-            {loading ? "Submiting..." : "Submit"}
-          </button>
+          <div className="">
+            <label
+              htmlFor="businessEmail"
+              className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+            >
+              Business Email
+            </label>
+            <span className="text-[12px] text-gray-700 dark:text-gray-400">
+              Add Business email address down here
+            </span>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={businessEmail}
+              onChange={(e) => setBusinessEmail(e.target.value)}
+              className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+              placeholder="Enter Email Address Here..."
+              required
+            />
+          </div>
+          <div className="">
+            <label
+              htmlFor="businessPassword"
+              className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+            >
+              Business Password
+            </label>
+            <span className="text-[12px] text-gray-700 dark:text-gray-400">
+              Business Account password will be used for login purpose
+            </span>
+            <div className="relative mt-1">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                id="password"
+                value={businessPassword}
+                onChange={(e) => setBusinessPassword(e.target.value)}
+                className="shadow-sm bg-gray-50 dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                placeholder="Enter Business Account Password Here..."
+                required
+              />
+              <div
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <FaRegEyeSlash
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <FaRegEye
+                    className="h-5 w-5 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="col-span-2  mb-5">
+            <label
+              htmlFor="businessDescription"
+              className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+            >
+              Business Description
+            </label>
+            <span className="text-[12px] text-gray-700 dark:text-gray-400">
+              Add Business Description down here
+            </span>
+            <textarea
+              name="businessDescription"
+              value={businessDescription}
+              onChange={(e) => setBusinessDescription(e.target.value)}
+              className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+              placeholder="Enter your business description..."
+              required
+            />
+          </div>
+
+          <div className="w-full flex gap-2 justify-end items-center col-span-2 text-right">
+            <button
+              type="button"
+              className="btn"
+              onClick={() => setOpenCreateBusinessForm(false)}
+            >
+              Close
+            </button>
+            <button
+              onClick={createBusiness}
+              disabled={loading}
+              className={`h-12 text-white bg-[#737FFF] hover:bg-[#646EE4] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center ${
+                loading ? "opacity-30" : ""
+              }`}
+            >
+              {loading ? "Adding Business..." : "Add Business"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

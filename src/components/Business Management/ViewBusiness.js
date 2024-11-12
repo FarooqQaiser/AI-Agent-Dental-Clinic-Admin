@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { API_URL } from "../../store";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export default function ViewBusiness({ setViewBusinessModal, id }) {
   const [loading, setLoading] = useState(false);
   const [business, setBusiness] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const fetchBusiness = async () => {
@@ -37,31 +39,17 @@ export default function ViewBusiness({ setViewBusinessModal, id }) {
 
   return (
     <>
-      <div className="bg-black bg-opacity-50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full h-full md:inset-0 h-modal md:h-full">
-        <div className="relative p-4 w-full max-w-xl h-full md:h-auto">
-          <div className="align-middle relative p-4 bg-[#FFFFFF] rounded-lg shadow dark:bg-[#1D232A] sm:p-5">
-            <button
-              type="button"
-              className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-              onClick={() => setViewBusinessModal(false)}
-            >
-              <svg
-                className="w-3 h-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 14"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6"
-                />
-              </svg>
-              <span className="sr-only">Close modal</span>
-            </button>
+      <div className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-70 z-50">
+        <div className="w-full max-w-[890px] bg-white px-8 pb-5 pt-10 dark:bg-[#1D232A] rounded-md">
+          <div className="mb-4">
+            <div className="text-2xl font-bold border-b dark:border-none">
+              Business Details
+            </div>
+            <span className="text-sm  text-gray-700 dark:text-gray-400">
+              Below is the existing business credentials.
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {loading ? (
               <>
                 <div className="w-full h-full flex justify-center items-center">
@@ -70,34 +58,129 @@ export default function ViewBusiness({ setViewBusinessModal, id }) {
               </>
             ) : (
               <>
-                <div className="flex justify-between mb-4 rounded-t sm:mb-5">
-                  <div className="text-lg text-gray-900 md:text-xl dark:text-white">
-                    <h3 className="font-semibold capitalize">
-                      {business.businessName}
-                    </h3>
-                    <p className="font-bold">{business.businessEINNumber}</p>
+                <div className="">
+                  <label
+                    htmlFor="businessName"
+                    className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+                  >
+                    Business Name
+                  </label>
+                  <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                    Below is the business name.
+                  </span>
+                  <input
+                    readOnly
+                    type="text"
+                    name="businessName"
+                    id="businessName"
+                    value={business.businessName}
+                    className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                  />
+                </div>
+                <div className="">
+                  <label
+                    htmlFor="businessEINNumber"
+                    className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+                  >
+                    EIN Number
+                  </label>
+                  <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                    Below is the business EIN Number.
+                  </span>
+                  <input
+                    readOnly
+                    type="text"
+                    name="businessEINNumber"
+                    id="businessEINNumber"
+                    value={business.businessEINNumber}
+                    className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                  />
+                </div>
+                <div className="">
+                  <label
+                    htmlFor="businessEmail"
+                    className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+                  >
+                    Business Email
+                  </label>
+                  <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                    Below is the Business email address.
+                  </span>
+                  <input
+                    readOnly
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={business.businessEmail}
+                    className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                  />
+                </div>
+                <div className="">
+                  <label
+                    htmlFor="businessPassword"
+                    className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+                  >
+                    Business Password
+                  </label>
+                  <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                    Below is the business account password.
+                  </span>
+                  <div className="relative mt-1">
+                    <input
+                      readOnly
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      value={business.businessPassword}
+                      className="shadow-sm bg-gray-50 dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                    />
+                    <div
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <FaRegEyeSlash
+                          className="h-5 w-5 text-gray-500 dark:text-gray-400"
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        <FaRegEye
+                          className="h-5 w-5 text-gray-500 dark:text-gray-400"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
-                <div>
-                  <h2 className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-                    Description
-                  </h2>
-                  <p className="mb-4 font-light">
-                    {business.businessDescription}
-                  </p>
-                  <h2 className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-                    Created on
-                  </h2>
-                  <p className="mb-4 font-light">26 May 2024</p>
-                  <h2 className="mb-2 font-semibold leading-none text-gray-900 dark:text-white">
-                    Status
-                  </h2>
-                  <span className="bg-[#5e17eb17] py-1 px-2 rounded-lg">
-                    Active
+                <div className="col-span-2  mb-5">
+                  <label
+                    htmlFor="businessDescription"
+                    className="text-md font-medium text-gray-900 dark:text-gray-300 block "
+                  >
+                    Business Description
+                  </label>
+                  <span className="text-[12px] text-gray-700 dark:text-gray-400">
+                    Below is the business description.
                   </span>
+                  <textarea
+                    readOnly
+                    name="businessDescription"
+                    value={business.businessDescription}
+                    className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                  />
                 </div>
               </>
             )}
+
+            <div className="w-full flex gap-2 justify-end items-center col-span-2 text-right">
+              <button
+                type="button"
+                className="btn"
+                onClick={() => setViewBusinessModal(false)}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
