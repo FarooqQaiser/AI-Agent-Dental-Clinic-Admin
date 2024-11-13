@@ -13,7 +13,7 @@ export default function ViewBot({ setShowViewBot, currentBot }) {
               Below is the information to the of the selected bot.
             </span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div className="">
               <label
                 htmlFor="botName"
@@ -30,7 +30,7 @@ export default function ViewBot({ setShowViewBot, currentBot }) {
                 name="botName"
                 id="botName"
                 value={currentBot.botName}
-                className="shadow-sm bg-gray-50  dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
+                className="shadow-sm bg-gray-50 cursor-not-allowed dark:bg-[#191E24] dark:border-gray-700 border border-gray-300  text-gray-900 dark:text-gray-200 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5 pr-10"
               />
             </div>
             <div className="col-span-2  mb-5">

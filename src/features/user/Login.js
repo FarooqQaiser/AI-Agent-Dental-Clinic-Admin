@@ -22,14 +22,14 @@ export const Login = () => {
 
     // navigate("/app/welcome");
     if (loginObj.email.trim() === "")
-      return setErrorMessage("Email is required! (use any value)");
+      return setErrorMessage("Email is required!");
     if (loginObj.password.trim() === "")
-      return setErrorMessage("Password is required! (use any value)");
+      return setErrorMessage("Password is required!");
     else {
       setLoading(true);
       let result = null;
       try {
-        const response = await fetch(API_URL + "users/login", {
+        const response = await fetch(API_URL + "admin/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export const Login = () => {
         // const storedUser = JSON.parse(localStorage.getItem("user"));
         // const userName = storedUser?.firstName;
         setLoading(false);
-        navigate("/app/welcome");
+        navigate("/app/business-management");
         // toast.success(`Welcome ${userName}`, {
         //   position: "top-right",
         //   autoClose: 1000,

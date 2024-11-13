@@ -95,7 +95,7 @@ const DeleteBusiness = ({ setShowDeleteBusinessModal, id }) => {
               <h1 className="text-xl font-bold">Delete Business</h1>
               <div className="w-full flex flex-col gap-5">
                 <svg
-                  className="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto"
+                  className="text-gray-400 dark:text-gray-500 w-11 h-11 mt-4 mx-auto"
                   aria-hidden="true"
                   fill="currentColor"
                   viewBox="0 0 20 20"
@@ -113,7 +113,7 @@ const DeleteBusiness = ({ setShowDeleteBusinessModal, id }) => {
                     {business.businessName}" business?
                   </h1>
                 </div>
-                <div className="flex w-full justify-center items-center gap-20">
+                <div className="flex w-full justify-center items-center gap-2">
                   <button
                     onClick={toggleModal}
                     className="h-10 text-white bg-[#4A00FF] hover:bg-[#3F00E7] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex justify-center items-center dark:bg-[#7480FF] dark:hover:bg-[#646EE4] dark:focus:ring-[#5763e8]"

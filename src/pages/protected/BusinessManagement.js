@@ -98,9 +98,10 @@ export default function BusinessManagement() {
               Add New Business
             </button>
             <div className="mt-4">
-              {totalBusinesses.length === 0 && (
-                <li className="text-gray-500">No Businesses added yet.</li>
-              )}
+              <div className="text-gray-500 dark:text-gray-300 text-sm">
+                Manage and track all businesses efficiently. Use the table below
+                to view, edit, and organize business details at a glance.
+              </div>
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 mt-6">
@@ -145,14 +146,14 @@ export default function BusinessManagement() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className=" divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {totalBusinesses.length === 0 ? (
                     <tr>
                       <td
-                        colSpan="4"
-                        className="px-6 py-4 text-center text-gray-500 dark:text-gray-400"
+                        colSpan={6} 
+                        className="px-6 pt-10 text-center text-gray-500 dark:text-gray-400"
                       >
-                        No totalBusinesses added yet.
+                        No Businesses added yet.
                       </td>
                     </tr>
                   ) : (
@@ -181,7 +182,6 @@ export default function BusinessManagement() {
                               Active
                             </span>
                           </td>
-
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                             <button
                               onClick={() => handleEditButton(business._id)}
